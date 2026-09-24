@@ -37,7 +37,14 @@ def ensure_model_file():
 @st.cache_resource(show_spinner="Loading model...")
 def load_model():
     ensure_model_file()
-    return load_learner(MODEL_PATH, cpu=True)
+    try:
+        return load_learner(MODEL_PATH, cpu=True)
+    except UnboundLocalError:
+        # fastai hides the real ImportError raised while unpickling. Re-run the load to expose it.
+        import pickle
+        import torch
+        torch.load(MODEL_PATH, map_location="cpu", pickle_module=pickle, weights_only=False)
+        raise
 
 
 st.title("🧠 Brain Tumor MRI Classifier")
