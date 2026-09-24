@@ -3,5 +3,8 @@ numpy>=2
 torch
 torchvision
 fastai>=2.8
+fasttransform
+plum-dispatch
+cloudpickle
 timm
 streamlit
