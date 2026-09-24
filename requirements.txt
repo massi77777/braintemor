@@ -1,6 +1,7 @@
 --extra-index-url https://download.pytorch.org/whl/cpu
+numpy>=2
 torch
 torchvision
-fastai
+fastai>=2.8
 timm
 streamlit
