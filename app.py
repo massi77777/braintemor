@@ -9,6 +9,19 @@ from fastai.vision.all import PILImage, load_learner
 if platform.system() == "Windows":
     pathlib.PosixPath = pathlib.WindowsPath
 
+# The model was pickled on Python 3.13+, where pathlib classes live in `pathlib._local`.
+# Older Python versions (like 3.11/3.12) don't have that module, so provide an alias.
+try:
+    import pathlib._local  # noqa: F401
+except ModuleNotFoundError:
+    import sys
+    import types
+
+    _shim = types.ModuleType("pathlib._local")
+    for _name in ("Path", "PosixPath", "WindowsPath", "PurePath", "PurePosixPath", "PureWindowsPath"):
+        setattr(_shim, _name, getattr(pathlib, _name))
+    sys.modules["pathlib._local"] = _shim
+
 MODEL_PATH = "model.pkl"
 
 DESCRIPTIONS = {
