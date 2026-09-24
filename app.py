@@ -54,6 +54,9 @@ st.caption(
 
 try:
     learn = load_model()
+except ModuleNotFoundError as e:
+    st.error(f"Missing Python module: `{e.name}`. Add it to requirements.txt and reboot the app.")
+    st.stop()
 except FileNotFoundError:
     st.error(
         f"`{MODEL_PATH}` was not found. Train the model with `train_and_export.py` "
